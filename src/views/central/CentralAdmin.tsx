@@ -8,7 +8,7 @@ import { newId, useStore } from '../../lib/store'
 import { displayStatus, residentAlerts, residentEvents, residentNews } from '../../lib/visibility'
 import { AdminShell } from '../../components/AdminShell'
 import { ErrorSummary, Field, focusSoon } from '../../components/form'
-import { Button, Callout, ConfirmDialog, EmptyState, PageTitle, StatusBadge } from '../../components/ui'
+import { Button, Callout, ConfirmDialog, EmptyState, PageTitle, StatusBadge, Stepper } from '../../components/ui'
 import { CampaignDetail } from '../resident/details'
 import { NewsCard, campaignAsFeed } from '../resident/cards'
 
@@ -239,9 +239,10 @@ function CampaignForm({ link, existing }: { link: Link; existing?: Campaign }) {
   if (step === 'preview') {
     return (
       <div className="stack-lg">
-        <PageTitle eyebrow="Étape 2 sur 2" lead="Vérifiez la campagne telle qu’elle apparaîtra dans chaque espace résident ciblé.">
+        <PageTitle eyebrow={existing ? 'Modifier' : 'Créer'} lead="Vérifiez la campagne telle qu’elle apparaîtra dans chaque espace résident ciblé.">
           Prévisualisation de la campagne
         </PageTitle>
+        <Stepper steps={['Saisie', 'Prévisualisation et publication']} current={1} />
         <div className="summary-box">
           <dl className="summary-list">
             <div>
@@ -301,11 +302,12 @@ function CampaignForm({ link, existing }: { link: Link; existing?: Campaign }) {
   return (
     <div className="stack-lg">
       <PageTitle
-        eyebrow={`${existing ? 'Modifier' : 'Créer'} · Étape 1 sur 2`}
+        eyebrow={existing ? 'Modifier' : 'Créer'}
         lead="Une campagne commune s’affiche dans les résidences choisies, avec la mention « Campagne nationale ». Les résidences ne peuvent pas modifier son texte."
       >
         {existing ? 'Modifier une campagne' : 'Créer une campagne commune'}
       </PageTitle>
+      <Stepper steps={['Saisie', 'Prévisualisation et publication']} current={0} />
 
       {!existing && (
         <div className="demo-hint">

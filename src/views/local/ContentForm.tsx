@@ -9,7 +9,7 @@ import { navigate } from '../../lib/router'
 import { newId, useStore } from '../../lib/store'
 import { displayStatus, STATUS_LABELS, TEMPLATE_LABELS } from '../../lib/visibility'
 import { ErrorSummary, Field, focusSoon } from '../../components/form'
-import { Button, Callout, ConfirmDialog, Icon, PageTitle, StatusBadge } from '../../components/ui'
+import { Button, Callout, ConfirmDialog, Icon, PageTitle, StatusBadge, Stepper } from '../../components/ui'
 import { ContentDetail } from '../resident/details'
 import { EventCard, NewsCard, contentAsFeed } from '../resident/cards'
 
@@ -169,9 +169,10 @@ export function ContentForm({
     const status = displayStatus({ ...c, status: 'publie' }, today())
     return (
       <div className="stack-lg">
-        <PageTitle eyebrow="Étape 2 sur 2" lead="Vérifiez l’information telle que les résidents la verront.">
+        <PageTitle eyebrow={existing ? 'Modifier' : 'Créer'} lead="Vérifiez l’information telle que les résidents la verront.">
           Prévisualisation
         </PageTitle>
+        <Stepper steps={['Saisie', 'Prévisualisation et publication']} current={1} />
         <div className="summary-box">
           <dl className="summary-list">
             <div>
@@ -237,11 +238,12 @@ export function ContentForm({
   return (
     <div className="stack-lg">
       <PageTitle
-        eyebrow={`${existing ? 'Modifier' : 'Créer'} · Étape 1 sur 2`}
+        eyebrow={existing ? 'Modifier' : 'Créer'}
         lead={`Cette information sera publiée uniquement dans ${residence.name}.`}
       >
         {existing ? 'Modifier une information' : 'Créer une information'}
       </PageTitle>
+      <Stepper steps={['Saisie', 'Prévisualisation et publication']} current={0} />
 
       {existing && (
         <p className="status-line">

@@ -6,7 +6,7 @@ import { href, type Route } from '../../lib/router'
 import { useStore } from '../../lib/store'
 import { today } from '../../lib/dates'
 import { residentAlerts, residentEvents, residentNews } from '../../lib/visibility'
-import { Button, Callout, EmptyState, Eyebrow, Icon, PageTitle, type IconName } from '../../components/ui'
+import { Button, Callout, EmptyState, Icon, PageTitle, type IconName } from '../../components/ui'
 import { CampaignDetail, ContentDetail } from './details'
 import { EventCard, NewsCard } from './cards'
 import { ServicesPage } from './ServicesPage'
@@ -110,9 +110,15 @@ function HomePage({ residence, link }: { residence: Residence; link: Link }) {
     <>
       <section className="hero" aria-labelledby="page-title">
         <div className="container">
-          <Eyebrow tone="inverse">{residence.kind}</Eyebrow>
+          <p className="hero__tag">Mon espace résidence · {residence.kind}</p>
           <h1 id="page-title" tabIndex={-1}>
-            {residence.name}
+            {residence.name.startsWith('Résidence ') ? (
+              <>
+                Résidence <em>{residence.name.slice('Résidence '.length)}</em>
+              </>
+            ) : (
+              residence.name
+            )}
           </h1>
           <p className="hero__lead">{residence.welcome}</p>
         </div>

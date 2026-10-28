@@ -66,7 +66,7 @@ Ajouter une résidence = ajouter une entrée `Residence` et ses `Contact` : comp
 
 ## Design system et accessibilité
 
-Couleurs, typographie et composants reprennent le design system « Adoma — parcours simples ». La référence Figma en ligne n'était pas accessible depuis l'environnement de développement : les valeurs ont été relevées sur une capture. Elles sont centralisées dans `src/styles/tokens.css` pour être ajustées facilement. Aucun logo n'est reproduit.
+Couleurs, typographie, espacements, formes et composants reprennent le design system « DESIGN SYSTEM ADOMA » (https://tweak-aged-65309564.figma.site/) : rouge `#E30613`, encre `#101828`, brume `#F4F6F8`, Arial / Helvetica Neue, échelle H1 52/56 · H2 36/42 · corps 16/26, grille de 4, rayons 4 (champs) et 8 (cartes), boutons, champs, cases à cocher, étapes de parcours, messages de retour, couverture et barre latérale. Toutes les valeurs sont centralisées dans `src/styles/tokens.css`, avec le nom d'origine en commentaire. Seul écart volontaire : la bordure des champs est foncée (`#7B8597` au lieu de `#98A2B3`) pour atteindre un contraste de 3:1. La couleur des campagnes nationales (bleu) n'existe pas dans le design system et reste à valider. Aucun logo n'est reproduit.
 
 Le prototype a été conçu avec attention à l'accessibilité : navigation au clavier, focus visible, champs étiquetés, messages annoncés aux lecteurs d'écran, informations jamais portées par la seule couleur. **Aucun audit RGAA n'a été réalisé** : aucune conformité n'est revendiquée.
 

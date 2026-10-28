@@ -79,6 +79,32 @@ export function PageTitle({ children, lead, eyebrow }: { children: ReactNode; le
   )
 }
 
+/* ---------- Étapes de parcours ---------- */
+
+export function Stepper({ steps, current }: { steps: string[]; current: number }) {
+  return (
+    <ol className="stepper" aria-label="Étapes">
+      {steps.map((label, i) => {
+        const state = i < current ? 'done' : i === current ? 'active' : 'todo'
+        return (
+          <li key={label} className={`stepper__step stepper__step--${state}`} aria-current={i === current ? 'step' : undefined}>
+            <span className="stepper__dot" aria-hidden="true">
+              {state === 'done' ? <Icon name="check" size={16} /> : i + 1}
+            </span>
+            <span className="stepper__label">
+              <span className="visually-hidden">
+                Étape {i + 1} sur {steps.length}
+                {state === 'done' ? ', terminée' : state === 'active' ? ', en cours' : ''} :{' '}
+              </span>
+              {label}
+            </span>
+          </li>
+        )
+      })}
+    </ol>
+  )
+}
+
 /* ---------- Boutons ---------- */
 
 type Variant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'inverse'

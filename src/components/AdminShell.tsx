@@ -8,7 +8,11 @@ export interface AdminNavItem {
   current: boolean
 }
 
-/** Gabarit commun aux deux administrations : bandeau sombre et navigation. */
+/**
+ * Gabarit commun aux deux administrations.
+ * Reprend la barre latérale sombre du design system (252 px) sur ordinateur ;
+ * sur mobile, elle devient un bandeau en haut de page.
+ */
 export function AdminShell({
   space,
   context,
@@ -22,12 +26,10 @@ export function AdminShell({
 }) {
   return (
     <div className="admin">
-      <header className="admin-header">
-        <div className="container admin-header__inner">
-          <div>
-            <p className="admin-header__space">{space}</p>
-            <p className="admin-header__context">{context}</p>
-          </div>
+      <header className="admin-sidebar">
+        <div className="admin-sidebar__inner">
+          <p className="admin-sidebar__label">{space}</p>
+          <p className="admin-sidebar__context">{context}</p>
           <nav aria-label={`Navigation — ${space}`}>
             <ul className="admin-nav">
               {nav.map((n) => (
@@ -40,6 +42,7 @@ export function AdminShell({
               ))}
             </ul>
           </nav>
+          <p className="admin-sidebar__footer">Prototype exploratoire — données fictives</p>
         </div>
       </header>
       <main id="contenu" className="admin-main" tabIndex={-1}>
