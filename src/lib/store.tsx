@@ -14,8 +14,8 @@ function load(): { data: AppData; persistent: boolean } {
       const parsed = JSON.parse(raw) as AppData
       if (parsed.version === DATA_VERSION) return { data: parsed, persistent: true }
       if (parsed.version === 1) {
-        // v2 ajoute les illustrations des espaces communs : les fiches résidences sont
-        // reprises des exemples, les contenus créés sur ce navigateur sont conservés.
+        // v2 met à jour les fiches résidences : elles sont reprises des exemples,
+        // les contenus créés sur ce navigateur sont conservés.
         const data: AppData = { ...parsed, version: DATA_VERSION, residences: createSeed().residences }
         window.localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
         return { data, persistent: true }

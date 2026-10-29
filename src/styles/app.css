@@ -1288,8 +1288,9 @@ h2.detail__title {
 .toc a[aria-current] .icon {
   color: var(--color-white);
 }
-[id^='titre-'] {
-  scroll-margin-top: 5rem;
+[id^='titre-'],
+section[aria-labelledby^='titre-'] {
+  scroll-margin-top: var(--space-4);
 }
 
 :where(.hours) {
@@ -2301,8 +2302,7 @@ textarea.input {
 }
 
 /* Visuels des espaces communs */
-.card__visual,
-.mini-card__visual {
+.card__visual {
   overflow: hidden;
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-border);
@@ -2310,28 +2310,13 @@ textarea.input {
 .card__visual {
   max-height: 180px;
 }
-.card__visual .visual,
-.mini-card__visual .visual {
+.card__visual .visual {
   display: block;
   width: 100%;
   height: auto;
 }
 .card__visual .visual {
   height: 180px;
-}
-.mini-card--visual {
-  background: var(--color-white);
-  border: 1px solid var(--color-border);
-  padding: 0 0 var(--space-4);
-  overflow: hidden;
-}
-.mini-card--visual .mini-card__visual {
-  border: 0;
-  border-bottom: 1px solid var(--color-border);
-  border-radius: 0;
-}
-.mini-card--visual > :not(.mini-card__visual) {
-  padding: 0 var(--space-4);
 }
 .card__visual {
   background-color: var(--color-bg-preview);
