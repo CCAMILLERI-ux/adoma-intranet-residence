@@ -7,6 +7,7 @@ import { href, type Route } from '../../lib/router'
 import { newId, useStore } from '../../lib/store'
 import { displayStatus, residentAlerts, residentEvents, residentNews } from '../../lib/visibility'
 import { AdminShell } from '../../components/AdminShell'
+import { ResidenceCard } from '../../components/ResidenceCard'
 import { ErrorSummary, Field, focusSoon } from '../../components/form'
 import { Button, Callout, ConfirmDialog, EmptyState, PageTitle, StatusBadge, Stepper } from '../../components/ui'
 import { CampaignDetail } from '../resident/details'
@@ -65,7 +66,7 @@ function Overview({ link }: { link: Link }) {
 
       <section aria-labelledby="res-title" className="stack-md">
         <h2 id="res-title">Résidences</h2>
-        <ul className="card-grid card-grid--2 plain-list">
+        <ul className="residence-list plain-list">
           {data.residences.map((r) => {
             const local = data.contents.filter((c) => c.residenceId === r.id)
             const stats = [
@@ -76,10 +77,8 @@ function Overview({ link }: { link: Link }) {
               { label: 'Alertes actives', value: residentAlerts(data, r.id, now).length },
             ]
             return (
-              <li key={r.id} className="card card--padded residence-card">
-                <p className="eyebrow eyebrow--red">{r.kind}</p>
-                <h3>{r.name}</h3>
-                <p className="muted small">{r.address}</p>
+              <li key={r.id}>
+                <ResidenceCard residence={r} headingLevel={3} highlight={`${stats[0].value + stats[2].value} actualités en ligne`}>
                 <dl className="stats">
                   {stats.map((s) => (
                     <div key={s.label}>
@@ -96,6 +95,7 @@ function Overview({ link }: { link: Link }) {
                     Administration locale<span className="visually-hidden"> — {r.name}</span>
                   </Button>
                 </div>
+                </ResidenceCard>
               </li>
             )
           })}
