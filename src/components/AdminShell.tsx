@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { BrandLogo } from './BrandLogo'
 import { Icon, type IconName } from './ui'
 
 export interface AdminNavItem {
@@ -28,6 +29,9 @@ export function AdminShell({
     <div className="admin">
       <header className="admin-sidebar">
         <div className="admin-sidebar__inner">
+          <div className="admin-sidebar__logo">
+            <BrandLogo />
+          </div>
           <p className="admin-sidebar__label">{space}</p>
           <p className="admin-sidebar__context">{context}</p>
           <nav aria-label={`Navigation — ${space}`}>

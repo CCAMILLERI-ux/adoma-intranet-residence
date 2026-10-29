@@ -12,6 +12,7 @@ import { EventCard, NewsCard } from './cards'
 import { ServicesPage } from './ServicesPage'
 import { ContactsPage } from './ContactsPage'
 import { ResidenceCard } from '../../components/ResidenceCard'
+import { BrandLogo } from '../../components/BrandLogo'
 import { ProceduresPage } from './ProceduresPage'
 
 const SECTIONS: { id: string; label: string; short: string; icon: IconName }[] = [
@@ -54,8 +55,11 @@ export function ResidentApp({ route }: { route: Route }) {
       <header className="resident-header">
         <div className="container resident-header__inner">
           <a className="resident-brand" href={link()} aria-current={section === '' ? 'page' : undefined}>
-            <span className="resident-brand__product">Mon espace résidence</span>
-            <span className="resident-brand__name">{residence.name}</span>
+            <BrandLogo />
+            <span className="resident-brand__text">
+              <span className="resident-brand__product">Mon espace résidence</span>
+              <span className="resident-brand__name">{residence.name}</span>
+            </span>
           </a>
           <nav className="resident-nav" aria-label="Navigation principale">
             <ul>
