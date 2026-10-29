@@ -32,7 +32,7 @@ const RESIDENCE_PHOTOS: Record<string, Photo> = {
 export const SERVICE_PHOTOS = {
   laverie: {
     src: laverie,
-    alt: 'Photo d’illustration : laverie avec une rangée de machines à laver numérotées.',
+    alt: 'Photo d’illustration : laverie claire avec machines à laver et sèche-linge numérotés, et une table à repasser.',
   },
   dechets: {
     src: dechets,
