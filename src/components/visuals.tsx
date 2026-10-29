@@ -1,9 +1,7 @@
-// Illustrations vectorielles du prototype, aux couleurs du design system.
-// Ce sont des dessins, pas des photos : ils ne représentent aucun bâtiment réel
-// ni aucune personne. Ils peuvent être remplacés par des photos libres de droits.
+// Illustrations vectorielles des résidences, aux couleurs du design system.
+// Elles servent de visuel de secours quand aucune photo n'est associée à une résidence
+// (voir photos.ts). Ce sont des dessins : ils ne représentent aucun bâtiment réel.
 
-import { useId, type ReactElement } from 'react'
-import type { SpaceVisual } from '../data/types'
 
 const INK = '#101828'
 const RED = '#e30613'
@@ -109,116 +107,6 @@ export function ResidenceVisual({ residenceId, label }: { residenceId: string; l
   return (
     <svg viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice" role="img" aria-label={label} className="visual">
       {residenceId === 'passerelles' ? <PasserellesArt /> : <TilleulsArt />}
-    </svg>
-  )
-}
-
-/* ---------- Scènes des espaces communs ---------- */
-
-const SCENES: Record<SpaceVisual, () => ReactElement> = {
-  laverie: () => (
-    <>
-      {[60, 136, 212].map((x, i) => (
-        <g key={x}>
-          <rect x={x} y="52" width="62" height="92" rx="5" fill="#fff" stroke={INK} strokeWidth="3" />
-          <path d={`M${x} 72h62`} stroke={INK} strokeWidth="3" />
-          <circle cx={x + 10} cy="62" r="3" fill={i === 1 ? RED : INK} />
-          <circle cx={x + 31} cy="106" r="22" fill={GLASS} stroke={INK} strokeWidth="3" />
-          <path d={`M${x + 18} 110q13 -10 26 0`} stroke="#fff" strokeWidth="3" fill="none" />
-        </g>
-      ))}
-    </>
-  ),
-  salle: () => (
-    <>
-      <path d="M160 20v26" stroke={INK} strokeWidth="3" />
-      <path d="M140 60a20 14 0 0 1 40 0z" fill={RED} />
-      <rect x="92" y="102" width="136" height="10" rx="3" fill={INK} />
-      <path d="M108 112v40M212 112v40" stroke={INK} strokeWidth="5" />
-      {[62, 238].map((x) => (
-        <g key={x} stroke={INK} strokeWidth="4" fill="none">
-          <path d={`M${x} 80v72M${x} 120h22v32`} />
-        </g>
-      ))}
-      <circle cx="138" cy="94" r="7" fill="#fff" stroke={INK} strokeWidth="3" />
-      <rect x="168" y="84" width="20" height="18" rx="3" fill={LEAF_LIGHT} />
-    </>
-  ),
-  jardin: () => (
-    <>
-      {[48, 168].map((x) => (
-        <g key={x}>
-          <rect x={x} y="112" width="104" height="36" rx="3" fill="#b9946b" stroke={INK} strokeWidth="3" />
-          {[18, 52, 86].map((dx, i) => (
-            <g key={dx}>
-              <path d={`M${x + dx} 112v-26`} stroke={LEAF} strokeWidth="4" />
-              <ellipse cx={x + dx - 9} cy="92" rx="11" ry="6" fill={i === 1 ? LEAF_LIGHT : LEAF} transform={`rotate(-30 ${x + dx - 9} 92)`} />
-              <ellipse cx={x + dx + 9} cy="82" rx="11" ry="6" fill={LEAF_LIGHT} transform={`rotate(30 ${x + dx + 9} 82)`} />
-            </g>
-          ))}
-        </g>
-      ))}
-      <circle cx="268" cy="40" r="16" fill="#ffd3d6" />
-    </>
-  ),
-  velos: () => (
-    <g stroke={INK} strokeWidth="4" fill="none" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="104" cy="118" r="34" />
-      <circle cx="216" cy="118" r="34" />
-      <path d="M104 118l40-50h52l20 50M144 68l28 50h44M190 56h16M136 56h18" />
-      <path d="M172 118l-8-50" stroke={RED} />
-    </g>
-  ),
-  coworking: () => (
-    <>
-      <rect x="54" y="112" width="212" height="10" rx="3" fill={INK} />
-      <path d="M72 122v34M248 122v34" stroke={INK} strokeWidth="5" />
-      <rect x="112" y="62" width="76" height="50" rx="4" fill={GLASS} stroke={INK} strokeWidth="3" />
-      <path d="M100 112h100" stroke={INK} strokeWidth="5" />
-      <path d="M226 112V74l-16-14" stroke={INK} strokeWidth="3" fill="none" />
-      <path d="M198 64l18-10 8 14z" fill={RED} />
-      <rect x="66" y="92" width="22" height="20" rx="3" fill={LEAF_LIGHT} />
-    </>
-  ),
-  sport: () => (
-    <>
-      <rect x="60" y="128" width="200" height="14" rx="7" fill="#ffd3d6" />
-      <rect x="96" y="84" width="128" height="10" rx="5" fill={INK} />
-      {[84, 220].map((x) => (
-        <g key={x}>
-          <rect x={x} y="62" width="16" height="54" rx="4" fill={RED} />
-          <rect x={x + (x < 160 ? -12 : 16)} y="72" width="12" height="34" rx="4" fill={INK} />
-        </g>
-      ))}
-    </>
-  ),
-  terrasse: () => (
-    <>
-      <circle cx="258" cy="40" r="18" fill="#ffd3d6" />
-      <path d="M160 40v104" stroke={INK} strokeWidth="4" />
-      <path d="M96 64q64 -50 128 0z" fill={RED} />
-      <path d="M96 64h128" stroke={INK} strokeWidth="3" />
-      {[84, 204].map((x) => (
-        <path key={x} d={`M${x} 96v48M${x} 118h30v26M${x + 30} 118v-8`} stroke={INK} strokeWidth="4" fill="none" />
-      ))}
-      <Tree x={40} y={128} r={20} light />
-    </>
-  ),
-}
-
-export function SpaceScene({ visual }: { visual: SpaceVisual }) {
-  const id = useId().replace(/:/g, '')
-  const Scene = SCENES[visual]
-  return (
-    <svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false" className="visual">
-      <defs>
-        <pattern id={`dots-${id}`} width="12" height="12" patternUnits="userSpaceOnUse">
-          <circle cx="1" cy="1" r="0.9" fill="#d9dde3" />
-        </pattern>
-      </defs>
-      <rect width="320" height="180" fill="#f7f8fa" />
-      <rect width="320" height="180" fill={`url(#dots-${id})`} />
-      <Scene />
     </svg>
   )
 }

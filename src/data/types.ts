@@ -14,12 +14,8 @@ export interface OpeningSlot {
   hours: string
 }
 
-/** Illustration associée à un espace commun. */
-export type SpaceVisual = 'laverie' | 'salle' | 'jardin' | 'velos' | 'coworking' | 'sport' | 'terrasse'
-
 export interface CommonSpace {
   name: string
-  visual: SpaceVisual
   hours: string
   description: string
 }

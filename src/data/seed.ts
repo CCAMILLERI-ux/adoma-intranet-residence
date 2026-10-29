@@ -58,9 +58,9 @@ export function createSeed(base: string = today()): AppData {
         'Ventilation : laisser les bouches d’aération dégagées.',
       ],
       commonSpaces: [
-        { name: 'Salle commune', visual: 'salle', hours: 'Tous les jours, 9 h – 20 h', description: 'Lieu de rencontre et d’activités. Réservation à l’accueil pour un usage privé.' },
-        { name: 'Jardin partagé', visual: 'jardin', hours: 'D’avril à octobre, 8 h – 20 h', description: 'Parcelles attribuées sur demande à l’accueil.' },
-        { name: 'Local vélos', visual: 'velos', hours: 'Accès permanent avec badge', description: 'Attachez votre vélo et indiquez votre numéro de logement.' },
+        { name: 'Salle commune', hours: 'Tous les jours, 9 h – 20 h', description: 'Lieu de rencontre et d’activités. Réservation à l’accueil pour un usage privé.' },
+        { name: 'Jardin partagé', hours: 'D’avril à octobre, 8 h – 20 h', description: 'Parcelles attribuées sur demande à l’accueil.' },
+        { name: 'Local vélos', hours: 'Accès permanent avec badge', description: 'Attachez votre vélo et indiquez votre numéro de logement.' },
       ],
       technical: {
         steps: [
@@ -116,9 +116,9 @@ export function createSeed(base: string = today()): AppData {
         'Volets roulants électriques.',
       ],
       commonSpaces: [
-        { name: 'Espace de coworking', visual: 'coworking', hours: 'Tous les jours, 7 h – 23 h', description: 'Postes de travail et imprimante. Badge nécessaire.' },
-        { name: 'Salle de sport', visual: 'sport', hours: 'Tous les jours, 6 h – 22 h', description: 'Accès après signature du règlement à l’accueil.' },
-        { name: 'Terrasse', visual: 'terrasse', hours: 'De mai à septembre, 9 h – 22 h', description: 'Merci de respecter le calme après 21 h.' },
+        { name: 'Espace de coworking', hours: 'Tous les jours, 7 h – 23 h', description: 'Postes de travail et imprimante. Badge nécessaire.' },
+        { name: 'Salle de sport', hours: 'Tous les jours, 6 h – 22 h', description: 'Accès après signature du règlement à l’accueil.' },
+        { name: 'Terrasse', hours: 'De mai à septembre, 9 h – 22 h', description: 'Merci de respecter le calme après 21 h.' },
       ],
       technical: {
         steps: [

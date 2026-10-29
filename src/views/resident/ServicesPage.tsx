@@ -2,8 +2,7 @@ import { useEffect } from 'react'
 import type { Residence } from '../../data/types'
 import { useStore } from '../../lib/store'
 import { Callout, Icon, PageTitle, type IconName } from '../../components/ui'
-import { SpaceScene } from '../../components/visuals'
-import { LAUNDRY_PHOTO } from '../../components/photos'
+import { SERVICE_PHOTOS, type Photo } from '../../components/photos'
 
 const PARTS: { id: string; label: string; icon: IconName }[] = [
   { id: 'laverie', label: 'Laverie', icon: 'wash' },
@@ -30,7 +29,8 @@ export function ServicesPage({
     if (!section) return
     const heading = document.getElementById(`titre-${section}`)
     if (heading) {
-      heading.scrollIntoView({ block: 'start' })
+      // On montre l'encart entier, photo comprise, puis on place le focus sur son titre.
+      ;(heading.closest('section') ?? heading).scrollIntoView({ block: 'start' })
       heading.focus({ preventScroll: true })
     }
   }, [section])
@@ -55,10 +55,7 @@ export function ServicesPage({
       </nav>
 
       <section className="card card--padded stack-sm" aria-labelledby="titre-laverie">
-        <figure className="card__visual card__visual--photo">
-          <img src={LAUNDRY_PHOTO.src} alt={LAUNDRY_PHOTO.alt} loading="lazy" decoding="async" />
-          <figcaption>Photo d’illustration</figcaption>
-        </figure>
+        <SectionPhoto photo={SERVICE_PHOTOS.laverie} />
         <h2 id="titre-laverie" tabIndex={-1} className="card__title">
           <Icon name="wash" />
           Laverie
@@ -85,6 +82,7 @@ export function ServicesPage({
       </section>
 
       <section className="card card--padded stack-sm" aria-labelledby="titre-dechets">
+        <SectionPhoto photo={SERVICE_PHOTOS.dechets} />
         <h2 id="titre-dechets" tabIndex={-1} className="card__title">
           <Icon name="recycle" />
           Déchets et tri
@@ -115,6 +113,7 @@ export function ServicesPage({
       </section>
 
       <section className="card card--padded stack-sm" aria-labelledby="titre-equipements">
+        <SectionPhoto photo={SERVICE_PHOTOS.equipements} />
         <h2 id="titre-equipements" tabIndex={-1} className="card__title">
           <Icon name="house" />
           Équipements du logement
@@ -130,16 +129,14 @@ export function ServicesPage({
       </section>
 
       <section className="card card--padded stack-sm" aria-labelledby="titre-espaces-communs">
+        <SectionPhoto photo={SERVICE_PHOTOS.espacesCommuns} />
         <h2 id="titre-espaces-communs" tabIndex={-1} className="card__title">
           <Icon name="people" />
           Espaces communs
         </h2>
         <div className="mini-grid">
           {residence.commonSpaces.map((s) => (
-            <div key={s.name} className="mini-card mini-card--visual">
-              <div className="mini-card__visual">
-                <SpaceScene visual={s.visual} />
-              </div>
+            <div key={s.name} className="mini-card">
               <h3>{s.name}</h3>
               <p className="mini-card__hours">
                 <Icon name="clock" size={16} />
@@ -186,5 +183,14 @@ export function ServicesPage({
         </p>
       </section>
     </div>
+  )
+}
+
+function SectionPhoto({ photo }: { photo: Photo }) {
+  return (
+    <figure className="card__visual card__visual--photo">
+      <img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" />
+      <figcaption aria-hidden="true">Photo d’illustration</figcaption>
+    </figure>
   )
 }

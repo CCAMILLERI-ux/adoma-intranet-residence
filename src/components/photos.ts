@@ -5,6 +5,9 @@
 // Elles sont importées depuis le code (et non stockées dans les données) pour que
 // Vite gère leur chemin sous /adoma-intranet-residence/.
 
+import dechets from '../assets/photos/dechets-tri.jpg'
+import equipements from '../assets/photos/equipements-logement.jpg'
+import espacesCommuns from '../assets/photos/espaces-communs.jpg'
 import laverie from '../assets/photos/laverie.jpg'
 import passerelles from '../assets/photos/residence-passerelles.jpg'
 import tilleuls from '../assets/photos/residence-tilleuls.jpg'
@@ -25,10 +28,25 @@ const RESIDENCE_PHOTOS: Record<string, Photo> = {
   },
 }
 
-export const LAUNDRY_PHOTO: Photo = {
-  src: laverie,
-  alt: 'Photo d’illustration : laverie équipée de machines à laver numérotées et d’un terminal de paiement.',
-}
+/** Une photo par encart de la page « Logement & services ». */
+export const SERVICE_PHOTOS = {
+  laverie: {
+    src: laverie,
+    alt: 'Photo d’illustration : laverie équipée de machines à laver numérotées et d’un terminal de paiement.',
+  },
+  dechets: {
+    src: dechets,
+    alt: 'Photo d’illustration : abris fermés pour les conteneurs de déchets, au pied d’immeubles.',
+  },
+  equipements: {
+    src: equipements,
+    alt: 'Photo d’illustration : logement vide avec coin cuisine équipé, évier et placards.',
+  },
+  espacesCommuns: {
+    src: espacesCommuns,
+    alt: 'Photo d’illustration : couloir d’étage lumineux, portes de logements et ascenseur.',
+  },
+} satisfies Record<string, Photo>
 
 export function residencePhoto(residenceId: string): Photo | undefined {
   return RESIDENCE_PHOTOS[residenceId]
