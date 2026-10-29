@@ -3,6 +3,7 @@ import type { Residence } from '../../data/types'
 import { useStore } from '../../lib/store'
 import { Callout, Icon, PageTitle, type IconName } from '../../components/ui'
 import { SpaceScene } from '../../components/visuals'
+import { LAUNDRY_PHOTO } from '../../components/photos'
 
 const PARTS: { id: string; label: string; icon: IconName }[] = [
   { id: 'laverie', label: 'Laverie', icon: 'wash' },
@@ -54,9 +55,10 @@ export function ServicesPage({
       </nav>
 
       <section className="card card--padded stack-sm" aria-labelledby="titre-laverie">
-        <div className="card__visual">
-          <SpaceScene visual="laverie" />
-        </div>
+        <figure className="card__visual card__visual--photo">
+          <img src={LAUNDRY_PHOTO.src} alt={LAUNDRY_PHOTO.alt} loading="lazy" decoding="async" />
+          <figcaption>Photo d’illustration</figcaption>
+        </figure>
         <h2 id="titre-laverie" tabIndex={-1} className="card__title">
           <Icon name="wash" />
           Laverie

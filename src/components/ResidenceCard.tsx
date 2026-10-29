@@ -3,6 +3,7 @@
 import type { ReactNode } from 'react'
 import type { Residence } from '../data/types'
 import { Icon } from './ui'
+import { residencePhoto } from './photos'
 import { ResidenceVisual } from './visuals'
 
 export function ResidenceCard({
@@ -18,13 +19,18 @@ export function ResidenceCard({
   children?: ReactNode
 }) {
   const H = headingLevel === 2 ? 'h2' : 'h3'
+  const photo = residencePhoto(residence.id)
   return (
     <article className="residence-card">
       <div className="residence-card__image">
-        <ResidenceVisual residenceId={residence.id} label={`Illustration de la ${residence.name}`} />
+        {photo ? (
+          <img className="visual" src={photo.src} alt={photo.alt} loading="lazy" decoding="async" />
+        ) : (
+          <ResidenceVisual residenceId={residence.id} label={`Illustration de la ${residence.name}`} />
+        )}
         <span className="residence-card__tag">{residence.kind}</span>
         <span className="residence-card__credit" aria-hidden="true">
-          Illustration
+          {photo ? 'Photo d’illustration' : 'Illustration'}
         </span>
       </div>
       <div className="residence-card__body">
