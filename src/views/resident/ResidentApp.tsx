@@ -11,6 +11,7 @@ import { CampaignDetail, ContentDetail } from './details'
 import { EventCard, NewsCard } from './cards'
 import { ServicesPage } from './ServicesPage'
 import { ContactsPage } from './ContactsPage'
+import { ResidenceCard } from '../../components/ResidenceCard'
 import { ProceduresPage } from './ProceduresPage'
 
 const SECTIONS: { id: string; label: string; short: string; icon: IconName }[] = [
@@ -103,7 +104,8 @@ function HomePage({ residence, link }: { residence: Residence; link: Link }) {
   const now = today()
   const alerts = residentAlerts(data, residence.id, now)
   const news = residentNews(data, residence.id, now).slice(0, 3)
-  const events = residentEvents(data, residence.id, now).slice(0, 3)
+  const upcoming = residentEvents(data, residence.id, now)
+  const events = upcoming.slice(0, 3)
   const contact = data.contacts.find((c) => c.id === residence.proximityContactId)
 
   return (
@@ -200,6 +202,18 @@ function HomePage({ residence, link }: { residence: Residence; link: Link }) {
             )}
           </section>
         </div>
+
+        <ResidenceCard
+          residence={residence}
+          highlight={`${upcoming.length} événement${upcoming.length > 1 ? 's' : ''} à venir`}
+        >
+          <p className="residence-card__text">
+            Laverie, tri des déchets, espaces communs, problème technique : tout le fonctionnement de votre résidence.
+          </p>
+          <Button href={link('services')} iconAfter="arrow">
+            Logement & services
+          </Button>
+        </ResidenceCard>
 
         <section className="home-grid" aria-label="Accueil et contact">
           <div className="card card--padded">
