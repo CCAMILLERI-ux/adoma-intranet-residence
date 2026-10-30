@@ -79,7 +79,7 @@ Visuels des cartes :
 - **Photos d'illustration** (cartes résidence, et un bandeau par encart de « Logement & services » : laverie, déchets et tri, équipements du logement, espaces communs) : fournies pour le prototype, dans `src/assets/photos/`. Elles ne représentent pas les résidences fictives et portent toujours la mention « Photo d'illustration ». Le panneau nominatif d'une résidence réelle et les plaques d'immatriculation ont été floutés. **Avant toute diffusion publique, vérifier les droits d'utilisation et le crédit photographe.**
 - **Illustrations vectorielles** (`src/components/visuals.tsx`) : visuel de secours pour une résidence sans photo.
 
-Portraits de l'équipe (Les Passerelles) : photos de banque d'images (Unsplash) associées à des noms fictifs et signalées comme photos d'illustration ; les membres sans portrait sont représentés par leurs initiales.
+Portraits de l'équipe (les deux résidences) : photos de la banque d'images Unsplash (licence Unsplash : utilisation gratuite, y compris commerciale, sans autorisation préalable), associées à des noms fictifs et signalées comme photos d'illustration. Un membre sans portrait est représenté par ses initiales.
 
 Le prototype a été conçu avec attention à l'accessibilité : navigation au clavier, focus visible, champs étiquetés, messages annoncés aux lecteurs d'écran, informations jamais portées par la seule couleur. **Aucun audit RGAA n'a été réalisé** : aucune conformité n'est revendiquée.
 
