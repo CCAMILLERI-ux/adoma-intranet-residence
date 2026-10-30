@@ -6,13 +6,12 @@ import type { ISODate, Time } from '../data/types'
 import { formatDateRange, formatLongDate, formatShortDate, formatTimeRange, parseISODate } from '../lib/dates'
 import { STRINGS, type StringKey } from './strings'
 
-export type Lang = 'fr' | 'en' | 'ar' | 'ru'
+export type Lang = 'fr' | 'en' | 'ar'
 
 export const LANGS: { code: Lang; label: string; locale: string; dir: 'ltr' | 'rtl'; index: number }[] = [
   { code: 'fr', label: 'FR', locale: 'fr-FR', dir: 'ltr', index: 0 },
   { code: 'en', label: 'EN', locale: 'en-GB', dir: 'ltr', index: 1 },
   { code: 'ar', label: 'العربية', locale: 'ar-u-nu-latn', dir: 'rtl', index: 2 },
-  { code: 'ru', label: 'РУ', locale: 'ru-RU', dir: 'ltr', index: 3 },
 ]
 
 const STORAGE_KEY = 'mon-espace-residence:langue'

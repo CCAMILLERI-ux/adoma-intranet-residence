@@ -37,7 +37,7 @@ Scénarios :
 - **C** — Tableau de bord local → *Retirer* → confirmer. L'information disparaît de la vue résident.
 - **D** — Vue résident → *Signaler une panne* → formulaire → *Envoyer*. Le signalement apparaît dans *Administration de résidence → Signalements* ; quand l'équipe le prend en charge ou le résout, le statut se met à jour côté résident.
 - **E** — Agenda → *Je participe* : le nombre d'inscrits augmente, côté résident et dans le tableau de bord de la résidence.
-- **F** — Sélecteur de langue (FR · EN · العربية · РУ) en haut de l'espace résident ; *Écouter* sur une actualité ; *Affichage hall (TV)* dans la barre de démo.
+- **F** — Sélecteur de langue (FR · EN · العربية) en haut de l'espace résident ; *Écouter* sur une actualité ; *Affichage hall (TV)* dans la barre de démo.
 
 ## Ce qui fonctionne réellement / ce qui est simulé
 
@@ -48,7 +48,7 @@ Scénarios :
 | Séparation des contenus entre résidences, campagnes multi-résidences | « Préparer le message » : assemblage local et déterministe des champs — **aucune IA** |
 | Prévisualisation avant publication, affiche A4 via l'impression du navigateur | Signalements de panne : enregistrés sur ce navigateur et visibles dans la console de la résidence ; **rien n'est transmis**, aucun ticket de maintenance |
 | Persistance après rechargement, réinitialisation | Inscriptions aux ateliers : enregistrées sur ce navigateur ; les autres inscrits sont des nombres fictifs |
-| Interface résident en français, anglais, arabe (de droite à gauche) et russe | Les contenus publiés par la résidence restent en français (signalé à l'écran) ; **traductions à faire relire par des locuteurs natifs** |
+| Interface résident en français, anglais et arabe (de droite à gauche) | Les contenus publiés par la résidence restent en français (signalé à l'écran) ; **traductions à faire relire par des locuteurs natifs** |
 | Lecteur vocal : synthèse vocale du navigateur (Web Speech API), lecture en français | Voix et disponibilité selon le navigateur et le système |
 | Affichage hall : défilement automatique des alertes, actualités et événements publiés, avec pause | Aucun écran réel n'est piloté |
 | Liens externes vers le site Adoma, la CAF et France Travail | Aucun paiement, suivi de dossier ni donnée de résident |
@@ -65,7 +65,7 @@ src/
   lib/draft.ts        simulation d'aide à la rédaction
   lib/store.tsx       stockage local
   styles/tokens.css   variables de design (couleurs, typographie, espacements…)
-  i18n/               textes de l'interface résident en quatre langues
+  i18n/               textes de l'interface résident (FR, EN, AR)
   views/resident|local|central|hall
 ```
 

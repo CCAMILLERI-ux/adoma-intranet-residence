@@ -1,4 +1,5 @@
-// Textes de l'interface résident, en quatre langues : [français, anglais, arabe, russe].
+// Textes de l'interface résident : [français, anglais, arabe, russe].
+// Le russe n'est plus proposé dans le sélecteur de langue ; ses textes sont conservés pour pouvoir le réactiver.
 // Seule l'interface est traduite. Les informations publiées par la résidence
 // (actualités, horaires, consignes) restent en français, ce que la page signale.
 // Traductions rédigées pour le prototype : à faire relire par des locuteurs natifs.
