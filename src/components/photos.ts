@@ -14,6 +14,9 @@ import tilleuls from '../assets/photos/residence-tilleuls.jpg'
 import pasAnim from '../assets/team/pas-anim.jpg'
 import pasMaint from '../assets/team/pas-maint.jpg'
 import pasResp from '../assets/team/pas-resp.jpg'
+import tilMaint from '../assets/team/til-maint.jpg'
+import tilResp from '../assets/team/til-resp.jpg'
+import tilSocial from '../assets/team/til-social.jpg'
 
 export interface Photo {
   src: string
@@ -59,6 +62,9 @@ export function residencePhoto(residenceId: string): Photo | undefined {
 // Une personne sans portrait est représentée par ses initiales.
 
 const TEAM_PHOTOS: Record<string, string> = {
+  'til-resp': tilResp,
+  'til-maint': tilMaint,
+  'til-social': tilSocial,
   'pas-resp': pasResp,
   'pas-maint': pasMaint,
   'pas-anim': pasAnim,
