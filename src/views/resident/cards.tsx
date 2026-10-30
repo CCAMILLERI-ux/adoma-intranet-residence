@@ -111,12 +111,17 @@ export function Registration({ event, compact }: { event: LocalContent; compact?
       </p>
       <button
         type="button"
-        className={`btn btn--sm ${registered ? 'btn--secondary' : 'btn--primary'}`}
+        className={
+          compact
+            ? `reg-link ${registered ? 'reg-link--cancel' : ''}`
+            : `btn btn--sm ${registered ? 'btn--secondary' : 'btn--primary'}`
+        }
         onClick={() => {
           toggleRegistration(event.id)
           notify(t(registered ? 'reg.notice.off' : 'reg.notice.on', { title: event.title }))
         }}
       >
+        {compact && !registered && <Icon name="plus" size={16} />}
         <span>{registered ? t('reg.cancel') : t('reg.join')}</span>
         <span className="visually-hidden"> : {event.title}</span>
       </button>
