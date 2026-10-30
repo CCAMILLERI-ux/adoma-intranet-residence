@@ -4,7 +4,7 @@
 
 import { useEffect, useState } from 'react'
 
-export type View = 'resident' | 'gestion' | 'central'
+export type View = 'resident' | 'gestion' | 'central' | 'ecran'
 
 export interface Route {
   residenceId: string
@@ -12,7 +12,7 @@ export interface Route {
   path: string[]
 }
 
-const VIEWS: View[] = ['resident', 'gestion', 'central']
+const VIEWS: View[] = ['resident', 'gestion', 'central', 'ecran']
 export const DEFAULT_RESIDENCE = 'tilleuls'
 
 export function parseHash(hash: string, residenceIds: string[]): Route {

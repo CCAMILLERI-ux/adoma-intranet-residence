@@ -67,3 +67,25 @@ describe('Préparer le message', () => {
     expect(missing).toEqual(['lieu', 'horaires', 'conséquences pratiques', 'contact utile'])
   })
 })
+
+describe('signalements et inscriptions', async () => {
+  const { nextReference } = await import('../src/views/resident/ReportPage')
+  const { participantCount } = await import('../src/views/resident/cards')
+  const data = createSeed(BASE)
+
+  it('numérote les signalements à la suite', () => {
+    expect(nextReference(data.reports)).toBe('SIG-0416')
+    expect(nextReference([])).toBe('SIG-0401')
+  })
+
+  it('ajoute le visiteur au nombre d’inscrits', () => {
+    const event = data.contents.find((c) => c.id === 'til-e1')!
+    expect(participantCount(event, false)).toBe(8)
+    expect(participantCount(event, true)).toBe(9)
+  })
+
+  it('chaque signalement d’exemple appartient à une résidence existante', () => {
+    const ids = data.residences.map((r) => r.id)
+    expect(data.reports.every((r) => ids.includes(r.residenceId))).toBe(true)
+  })
+})

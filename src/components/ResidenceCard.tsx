@@ -4,6 +4,7 @@ import type { ReactNode } from 'react'
 import type { Residence } from '../data/types'
 import { Icon } from './ui'
 import { residencePhoto } from './photos'
+import { useI18n } from '../i18n'
 import { ResidenceVisual } from './visuals'
 
 export function ResidenceCard({
@@ -20,6 +21,7 @@ export function ResidenceCard({
 }) {
   const H = headingLevel === 2 ? 'h2' : 'h3'
   const photo = residencePhoto(residence.id)
+  const { t } = useI18n()
   return (
     <article className="residence-card">
       <div className="residence-card__image">
@@ -30,7 +32,7 @@ export function ResidenceCard({
         )}
         <span className="residence-card__tag">{residence.kind}</span>
         <span className="residence-card__credit" aria-hidden="true">
-          {photo ? 'Photo d’illustration' : 'Illustration'}
+          {photo ? t('photo.caption') : 'Illustration'}
         </span>
       </div>
       <div className="residence-card__body">

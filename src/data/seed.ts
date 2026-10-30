@@ -6,9 +6,9 @@
 
 import { addDays, today } from '../lib/dates'
 import { generateDraft } from '../lib/draft'
-import type { AppData, Campaign, Contact, LocalContent, Residence } from './types'
+import type { AppData, Campaign, Contact, LocalContent, Report, Residence } from './types'
 
-export const DATA_VERSION = 2
+export const DATA_VERSION = 3
 
 export function createSeed(base: string = today()): AppData {
   const d = (n: number) => addDays(base, n)
@@ -204,7 +204,7 @@ export function createSeed(base: string = today()): AppData {
       publishAt: d(-40), expireAt: d(-10), status: 'publie',
     },
     {
-      ...base0, id: 'til-e1', residenceId: 'tilleuls', template: 'evenement',
+      ...base0, id: 'til-e1', participants: 8, residenceId: 'tilleuls', template: 'evenement',
       title: 'Café d’accueil des nouveaux résidents',
       location: 'Salle commune',
       startDate: d(3), endDate: d(3), startTime: '10:00', endTime: '11:30',
@@ -215,7 +215,7 @@ export function createSeed(base: string = today()): AppData {
       publishAt: d(-5), expireAt: d(3), status: 'publie',
     },
     {
-      ...base0, id: 'til-e2', residenceId: 'tilleuls', template: 'evenement',
+      ...base0, id: 'til-e2', participants: 4, residenceId: 'tilleuls', template: 'evenement',
       title: 'Permanence d’accès aux droits',
       location: 'Salle commune',
       startDate: d(9), endDate: d(9), startTime: '14:00', endTime: '17:00',
@@ -226,7 +226,7 @@ export function createSeed(base: string = today()): AppData {
       publishAt: d(-3), expireAt: d(9), status: 'publie',
     },
     {
-      ...base0, id: 'til-e3', residenceId: 'tilleuls', template: 'evenement',
+      ...base0, id: 'til-e3', participants: 12, residenceId: 'tilleuls', template: 'evenement',
       title: 'Atelier : bien trier ses déchets',
       location: 'Salle commune',
       startDate: d(16), endDate: d(16), startTime: '15:00', endTime: '16:00',
@@ -270,7 +270,7 @@ export function createSeed(base: string = today()): AppData {
       publishAt: d(1), expireAt: d(20), status: 'brouillon',
     },
     {
-      ...base0, id: 'pas-e1', residenceId: 'passerelles', template: 'evenement',
+      ...base0, id: 'pas-e1', participants: 9, residenceId: 'passerelles', template: 'evenement',
       title: 'Soirée jeux de société',
       location: 'Espace de coworking',
       startDate: d(5), endDate: d(5), startTime: '19:00', endTime: '22:00',
@@ -281,7 +281,7 @@ export function createSeed(base: string = today()): AppData {
       publishAt: d(-4), expireAt: d(5), status: 'publie',
     },
     {
-      ...base0, id: 'pas-e2', residenceId: 'passerelles', template: 'evenement',
+      ...base0, id: 'pas-e2', participants: 5, residenceId: 'passerelles', template: 'evenement',
       title: 'Atelier CV et préparation aux entretiens',
       location: 'Espace de coworking',
       startDate: d(11), endDate: d(11), startTime: '18:00', endTime: '20:00',
@@ -292,7 +292,7 @@ export function createSeed(base: string = today()): AppData {
       publishAt: d(-2), expireAt: d(11), status: 'publie',
     },
     {
-      ...base0, id: 'pas-e3', residenceId: 'passerelles', template: 'evenement',
+      ...base0, id: 'pas-e3', participants: 6, residenceId: 'passerelles', template: 'evenement',
       title: 'Atelier réparation de vélos',
       location: 'Local vélos, cour intérieure',
       startDate: d(18), endDate: d(18), startTime: '10:00', endTime: '12:30',
@@ -333,5 +333,24 @@ export function createSeed(base: string = today()): AppData {
     if (c.status === 'publie' && !c.message) c.message = generateDraft(c).text
   }
 
-  return { version: DATA_VERSION, seededOn: base, residences, contacts, contents, campaigns }
+  const at = (days: number, time: string) => `${d(days)}T${time}:00`
+  const reports: Report[] = [
+    {
+      id: 'sig-til-1', reference: 'SIG-0412', residenceId: 'tilleuls', category: 'plomberie', unit: 'A-204',
+      description: 'Léger goutte-à-goutte sous le lavabo de la salle de bain.', urgent: false,
+      status: 'en-cours', mine: false, createdAt: at(-2, '09:15'), updatedAt: at(-1, '10:30'),
+    },
+    {
+      id: 'sig-til-2', reference: 'SIG-0415', residenceId: 'tilleuls', category: 'parties-communes', unit: 'B-1er étage',
+      description: 'L’éclairage du couloir reste éteint côté escalier.', urgent: false,
+      status: 'recu', mine: false, createdAt: at(0, '08:40'), updatedAt: at(0, '08:40'),
+    },
+    {
+      id: 'sig-pas-1', reference: 'SIG-0409', residenceId: 'passerelles', category: 'equipement', unit: '312',
+      description: 'Le volet roulant électrique ne descend plus.', urgent: false,
+      status: 'resolu', mine: false, createdAt: at(-5, '18:05'), updatedAt: at(-3, '11:20'),
+    },
+  ]
+
+  return { version: DATA_VERSION, seededOn: base, residences, contacts, contents, campaigns, reports, registrations: {} }
 }

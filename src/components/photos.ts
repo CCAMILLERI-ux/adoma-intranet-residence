@@ -11,6 +11,9 @@ import espacesCommuns from '../assets/photos/espaces-communs.jpg'
 import laverie from '../assets/photos/laverie.jpg'
 import passerelles from '../assets/photos/residence-passerelles.jpg'
 import tilleuls from '../assets/photos/residence-tilleuls.jpg'
+import pasAnim from '../assets/team/pas-anim.jpg'
+import pasMaint from '../assets/team/pas-maint.jpg'
+import pasResp from '../assets/team/pas-resp.jpg'
 
 export interface Photo {
   src: string
@@ -50,4 +53,17 @@ export const SERVICE_PHOTOS = {
 
 export function residencePhoto(residenceId: string): Photo | undefined {
   return RESIDENCE_PHOTOS[residenceId]
+}
+
+// Portraits d'illustration (banque d'images Unsplash) associés à des membres d'équipe fictifs.
+// Une personne sans portrait est représentée par ses initiales.
+
+const TEAM_PHOTOS: Record<string, string> = {
+  'pas-resp': pasResp,
+  'pas-maint': pasMaint,
+  'pas-anim': pasAnim,
+}
+
+export function teamPhoto(contactId: string): string | undefined {
+  return TEAM_PHOTOS[contactId]
 }

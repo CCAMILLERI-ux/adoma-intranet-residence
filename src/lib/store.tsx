@@ -3,7 +3,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { createSeed, DATA_VERSION } from '../data/seed'
-import type { AppData, Campaign, LocalContent, StoredStatus } from '../data/types'
+import type { AppData, Campaign, LocalContent, Report, ReportStatus, StoredStatus } from '../data/types'
 
 const STORAGE_KEY = 'mon-espace-residence:data'
 
@@ -13,10 +13,20 @@ function load(): { data: AppData; persistent: boolean } {
     if (raw) {
       const parsed = JSON.parse(raw) as AppData
       if (parsed.version === DATA_VERSION) return { data: parsed, persistent: true }
-      if (parsed.version === 1) {
-        // v2 met à jour les fiches résidences : elles sont reprises des exemples,
-        // les contenus créés sur ce navigateur sont conservés.
-        const data: AppData = { ...parsed, version: DATA_VERSION, residences: createSeed().residences }
+      if (parsed.version === 1 || parsed.version === 2) {
+        // Mise à jour du modèle : fiches résidences et contacts repris des exemples,
+        // ajout des signalements et des inscriptions. Les contenus créés sur ce navigateur sont conservés.
+        const seed = createSeed()
+        const seedParticipants = new Map(seed.contents.map((c) => [c.id, c.participants]))
+        const data: AppData = {
+          ...parsed,
+          version: DATA_VERSION,
+          residences: seed.residences,
+          contacts: seed.contacts,
+          contents: parsed.contents.map((c) => ({ ...c, participants: c.participants ?? seedParticipants.get(c.id) })),
+          reports: parsed.reports ?? seed.reports,
+          registrations: parsed.registrations ?? {},
+        }
         window.localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
         return { data, persistent: true }
       }
@@ -41,6 +51,9 @@ interface Store {
   setContentStatus: (id: string, status: StoredStatus) => void
   saveCampaign: (campaign: Campaign) => void
   setCampaignStatus: (id: string, status: StoredStatus) => void
+  addReport: (report: Report) => void
+  setReportStatus: (id: string, status: ReportStatus) => void
+  toggleRegistration: (eventId: string) => void
   reset: () => void
   /** Message de confirmation, lu par les lecteurs d'écran. */
   notice: { id: number; text: string } | null
@@ -103,6 +116,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           ...d,
           campaigns: d.campaigns.map((c) => (c.id === id ? { ...c, status, updatedAt: stamp() } : c)),
         })),
+      addReport: (report) => setData((d) => ({ ...d, reports: [report, ...d.reports] })),
+      setReportStatus: (id, status) =>
+        setData((d) => ({
+          ...d,
+          reports: d.reports.map((r) => (r.id === id ? { ...r, status, updatedAt: stamp() } : r)),
+        })),
+      toggleRegistration: (eventId) =>
+        setData((d) => ({ ...d, registrations: { ...d.registrations, [eventId]: !d.registrations[eventId] } })),
       reset: () => setData(createSeed()),
     }),
     [data, persistent, notice, notify, clearNotice],

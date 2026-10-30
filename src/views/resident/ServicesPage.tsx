@@ -1,15 +1,17 @@
 import { useEffect } from 'react'
 import type { Residence } from '../../data/types'
 import { useStore } from '../../lib/store'
-import { Callout, Icon, PageTitle, type IconName } from '../../components/ui'
+import { Button, Callout, Icon, PageTitle, type IconName } from '../../components/ui'
+import { useI18n } from '../../i18n'
+import type { StringKey } from '../../i18n/strings'
 import { SERVICE_PHOTOS, type Photo } from '../../components/photos'
 
-const PARTS: { id: string; label: string; icon: IconName }[] = [
-  { id: 'laverie', label: 'Laverie', icon: 'wash' },
-  { id: 'dechets', label: 'Déchets et tri', icon: 'recycle' },
-  { id: 'equipements', label: 'Équipements du logement', icon: 'house' },
-  { id: 'espaces-communs', label: 'Espaces communs', icon: 'people' },
-  { id: 'probleme-technique', label: 'Un problème technique ?', icon: 'tool' },
+const PARTS: { id: string; label: StringKey; icon: IconName }[] = [
+  { id: 'laverie', label: 'services.laundry', icon: 'wash' },
+  { id: 'dechets', label: 'services.waste', icon: 'recycle' },
+  { id: 'equipements', label: 'services.equipment', icon: 'house' },
+  { id: 'espaces-communs', label: 'services.common', icon: 'people' },
+  { id: 'probleme-technique', label: 'services.tech', icon: 'tool' },
 ]
 
 export function ServicesPage({
@@ -21,6 +23,7 @@ export function ServicesPage({
   section?: string
   link: (...path: string[]) => string
 }) {
+  const { t } = useI18n()
   const { data } = useStore()
   const tech = data.contacts.find((c) => c.id === residence.technical.contactId)
 
@@ -37,17 +40,17 @@ export function ServicesPage({
 
   return (
     <div className="container stack-lg">
-      <PageTitle eyebrow={residence.name} lead="Le fonctionnement de la résidence au quotidien.">
-        Logement & services
+      <PageTitle eyebrow={residence.name} lead={t('services.lead')}>
+        {t('nav.services')}
       </PageTitle>
 
-      <nav aria-label="Rubriques de la page" className="toc">
+      <nav aria-label={t('services.toc')} className="toc">
         <ul>
           {PARTS.map((p) => (
             <li key={p.id}>
               <a href={link('services', p.id)} aria-current={section === p.id ? 'true' : undefined}>
                 <Icon name={p.icon} size={18} />
-                {p.label}
+                {t(p.label)}
               </a>
             </li>
           ))}
@@ -58,11 +61,11 @@ export function ServicesPage({
         <SectionPhoto photo={SERVICE_PHOTOS.laverie} />
         <h2 id="titre-laverie" tabIndex={-1} className="card__title">
           <Icon name="wash" />
-          Laverie
+          {t('services.laundry')}
         </h2>
         <dl className="hours">
           <div>
-            <dt>Lieu</dt>
+            <dt>{t('detail.where')}</dt>
             <dd>{residence.laundry.place}</dd>
           </div>
           {residence.laundry.hours.map((h) => (
@@ -72,7 +75,7 @@ export function ServicesPage({
             </div>
           ))}
         </dl>
-        <h3>Comment ça marche ?</h3>
+        <h3>{t('services.how')}</h3>
         <ol className="steps">
           {residence.laundry.steps.map((s) => (
             <li key={s}>{s}</li>
@@ -85,20 +88,20 @@ export function ServicesPage({
         <SectionPhoto photo={SERVICE_PHOTOS.dechets} />
         <h2 id="titre-dechets" tabIndex={-1} className="card__title">
           <Icon name="recycle" />
-          Déchets et tri
+          {t('services.waste')}
         </h2>
         <p>
-          <strong>Où ?</strong> {residence.waste.place}
+          <strong>{t('services.where')}</strong> {residence.waste.place}
         </p>
         <p>
-          <strong>Collectes :</strong> {residence.waste.collectionDays}
+          <strong>{t('services.collections')}</strong> {residence.waste.collectionDays}
         </p>
         <table className="table">
-          <caption className="visually-hidden">Que mettre dans chaque bac ?</caption>
+          <caption className="visually-hidden">{t('services.bins.caption')}</caption>
           <thead>
             <tr>
-              <th scope="col">Bac</th>
-              <th scope="col">Ce que l’on y met</th>
+              <th scope="col">{t('services.bin')}</th>
+              <th scope="col">{t('services.binItems')}</th>
             </tr>
           </thead>
           <tbody>
@@ -116,7 +119,7 @@ export function ServicesPage({
         <SectionPhoto photo={SERVICE_PHOTOS.equipements} />
         <h2 id="titre-equipements" tabIndex={-1} className="card__title">
           <Icon name="house" />
-          Équipements du logement
+          {t('services.equipment')}
         </h2>
         <ul className="check-list">
           {residence.equipment.map((e) => (
@@ -132,7 +135,7 @@ export function ServicesPage({
         <SectionPhoto photo={SERVICE_PHOTOS.espacesCommuns} />
         <h2 id="titre-espaces-communs" tabIndex={-1} className="card__title">
           <Icon name="people" />
-          Espaces communs
+          {t('services.common')}
         </h2>
         <div className="mini-grid">
           {residence.commonSpaces.map((s) => (
@@ -151,9 +154,14 @@ export function ServicesPage({
       <section className="card card--padded stack-sm" aria-labelledby="titre-probleme-technique">
         <h2 id="titre-probleme-technique" tabIndex={-1} className="card__title">
           <Icon name="tool" />
-          Un problème technique ?
+          {t('services.tech')}
         </h2>
-        <p>Une fuite, une panne, un équipement abîmé ? Voici la démarche à suivre.</p>
+        <p>{t('services.tech.intro')}</p>
+        <div>
+          <Button href={link('signaler')} icon="tool">
+            {t('report.title')}
+          </Button>
+        </div>
         <ol className="steps">
           {residence.technical.steps.map((s) => (
             <li key={s}>{s}</li>
@@ -161,36 +169,34 @@ export function ServicesPage({
         </ol>
         {tech && (
           <div className="contact-box">
-            <p className="contact-box__label">Contact technique (fictif)</p>
+            <p className="contact-box__label">{t('services.tech.contact')}</p>
             <p className="contact-role">{tech.role}</p>
             <p>
-              {tech.name} <span className="fictive">(nom fictif)</span> — {tech.hours}
+              {tech.name} <span className="fictive">({t('fictive.name')})</span> — {tech.hours}
             </p>
             <p>
-              <a href={`tel:${tech.phone.replace(/\s/g, '')}`}>
+              <a href={`tel:${tech.phone.replace(/\s/g, '')}`} dir="ltr">
                 <Icon name="phone" size={18} />
                 {tech.phone}
               </a>{' '}
-              <span className="fictive">(numéro fictif)</span>
+              <span className="fictive">({t('fictive.phone')})</span>
             </p>
           </div>
         )}
-        <Callout tone="warning" title="En cas d’urgence">
+        <Callout tone="warning" title={t('services.emergency')}>
           <p>{residence.technical.emergency}</p>
         </Callout>
-        <p className="muted small">
-          Ce prototype n’envoie aucune demande d’intervention : il indique seulement qui contacter.
-        </p>
       </section>
     </div>
   )
 }
 
 function SectionPhoto({ photo }: { photo: Photo }) {
+  const { t } = useI18n()
   return (
     <figure className="card__visual card__visual--photo">
       <img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" />
-      <figcaption aria-hidden="true">Photo d’illustration</figcaption>
+      <figcaption aria-hidden="true">{t('photo.caption')}</figcaption>
     </figure>
   )
 }
