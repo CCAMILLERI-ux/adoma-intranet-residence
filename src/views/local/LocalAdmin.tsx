@@ -10,6 +10,8 @@ import { AdminShell } from '../../components/AdminShell'
 import { Button, Callout, ConfirmDialog, EmptyState, Icon, PageTitle, StatusBadge } from '../../components/ui'
 import { ContentForm } from './ContentForm'
 import { Poster } from './Poster'
+import { ReportsAdmin, newReportsCount } from './ReportsAdmin'
+import { participantCount } from '../resident/cards'
 
 export function LocalAdmin({ route }: { route: Route }) {
   const { data } = useStore()
@@ -17,6 +19,7 @@ export function LocalAdmin({ route }: { route: Route }) {
   const link = (...path: string[]) => href({ residenceId: residence.id, view: 'gestion', path })
   const [page = '', id] = route.path
 
+  const newReports = newReportsCount(data.reports, residence.id)
   const find = (cid?: string) => data.contents.find((c) => c.id === cid && c.residenceId === residence.id)
 
   let body
@@ -24,6 +27,7 @@ export function LocalAdmin({ route }: { route: Route }) {
   else if (page === 'modifier' && find(id)) body = <ContentForm key={id} residence={residence} link={link} existing={find(id)} />
   else if (page === 'publie' && find(id)) body = <Published content={find(id)!} residence={residence} link={link} />
   else if (page === 'affiche' && find(id)) return <Poster content={find(id)!} residence={residence} backHref={link()} />
+  else if (page === 'signalements') body = <ReportsAdmin residence={residence} />
   else body = <Dashboard residence={residence} link={link} />
 
   return (
@@ -33,6 +37,12 @@ export function LocalAdmin({ route }: { route: Route }) {
       nav={[
         { href: link(), label: 'Tableau de bord', icon: 'doc', current: page === '' },
         { href: link('nouveau'), label: 'Créer une information', icon: 'plus', current: page === 'nouveau' },
+        {
+          href: link('signalements'),
+          label: newReports ? `Signalements (${newReports} nouveau${newReports > 1 ? 'x' : ''})` : 'Signalements',
+          icon: 'tool',
+          current: page === 'signalements',
+        },
         {
           href: href({ residenceId: residence.id, view: 'resident', path: [] }),
           label: 'Aperçu de l’espace résident',
@@ -72,6 +82,24 @@ function Dashboard({ residence, link }: { residence: Residence; link: Link }) {
         Tableau de bord
       </PageTitle>
 
+      {newReportsCount(data.reports, residence.id) > 0 && (
+        <div className="alert-banner">
+          <span className="alert-banner__icon">
+            <Icon name="tool" />
+          </span>
+          <div>
+            <p className="alert-banner__label">Signalements de panne</p>
+            <p className="alert-banner__title">
+              {newReportsCount(data.reports, residence.id)} nouveau
+              {newReportsCount(data.reports, residence.id) > 1 ? 'x signalements à traiter' : ' signalement à traiter'}
+            </p>
+          </div>
+          <a className="alert-banner__link" href={link('signalements')}>
+            Voir les signalements
+            <Icon name="arrow" size={18} />
+          </a>
+        </div>
+      )}
       <div className="action-row">
         <Button href={link('nouveau')} icon="plus">
           Créer une information
@@ -106,6 +134,12 @@ function Dashboard({ residence, link }: { residence: Residence; link: Link }) {
                     <StatusBadge status={status} />
                     <span className="muted small">{TEMPLATE_LABELS[c.template]}</span>
                     {c.important && <span className="muted small">· Bandeau d’accueil</span>}
+                    {c.template === 'evenement' && (
+                      <span className="muted small">
+                        · {participantCount(c, !!data.registrations[c.id])} inscrit
+                        {participantCount(c, !!data.registrations[c.id]) > 1 ? 's' : ''}
+                      </span>
+                    )}
                   </div>
                   <h3 className="admin-row__title">{c.title || 'Sans titre'}</h3>
                   <p className="admin-row__dates small">

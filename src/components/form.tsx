@@ -1,6 +1,7 @@
 // Champs de formulaire étiquetés, avec aide et message d'erreur reliés au champ.
 
 import type { ReactNode } from 'react'
+import { useI18n } from '../i18n'
 
 interface FieldProps {
   id: string
@@ -12,12 +13,13 @@ interface FieldProps {
 }
 
 export function Field({ id, label, hint, error, required, children }: FieldProps) {
+  const { t } = useI18n()
   const describedBy = [hint ? `${id}-hint` : '', error ? `${id}-error` : ''].filter(Boolean).join(' ') || undefined
   return (
     <div className={`field ${error ? 'field--error' : ''}`}>
       <label htmlFor={id} className="field__label">
         {label}
-        {required ? <span className="field__req"> (obligatoire)</span> : <span className="field__opt"> (facultatif)</span>}
+        {required ? <span className="field__req"> ({t('required')})</span> : <span className="field__opt"> ({t('optional')})</span>}
       </label>
       {hint && (
         <p className="field__hint" id={`${id}-hint`}>
@@ -27,7 +29,7 @@ export function Field({ id, label, hint, error, required, children }: FieldProps
       {children({ id, 'aria-describedby': describedBy, 'aria-invalid': error ? true : undefined, required })}
       {error && (
         <p className="field__error" id={`${id}-error`}>
-          Erreur : {error}
+          {t('error')} : {error}
         </p>
       )}
     </div>

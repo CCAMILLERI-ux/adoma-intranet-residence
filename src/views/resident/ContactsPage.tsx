@@ -1,23 +1,26 @@
 import type { Residence } from '../../data/types'
+import { useI18n } from '../../i18n'
 import { useStore } from '../../lib/store'
+import { Avatar } from '../../components/Avatar'
 import { Callout, Icon, PageTitle } from '../../components/ui'
 
 export function ContactsPage({ residence }: { residence: Residence }) {
+  const { t } = useI18n()
   const { data } = useStore()
   const contacts = data.contacts.filter((c) => c.residenceId === residence.id)
   return (
     <div className="container stack-lg">
-      <PageTitle eyebrow={residence.name} lead="Qui fait quoi dans votre résidence, et quand trouver chaque personne.">
-        Équipe & contacts
+      <PageTitle eyebrow={residence.name} lead={t('contacts.lead')}>
+        {t('nav.contacts')}
       </PageTitle>
-      <Callout tone="neutral" title="Données fictives">
-        <p>Les noms, numéros et adresses électroniques de cette page sont inventés pour la démonstration.</p>
+      <Callout tone="neutral" title={t('contacts.fictive.title')}>
+        <p>{t('contacts.fictive.text')}</p>
       </Callout>
 
       <section aria-labelledby="accueil-title" className="card card--padded stack-sm">
         <h2 id="accueil-title" className="card__title">
           <Icon name="clock" />
-          Accueil de la résidence
+          {t('contacts.reception')}
         </h2>
         <p>
           <Icon name="pin" size={18} /> {residence.receptionPlace}
@@ -33,46 +36,55 @@ export function ContactsPage({ residence }: { residence: Residence }) {
       </section>
 
       <section aria-labelledby="team-title" className="stack-md">
-        <h2 id="team-title">L’équipe</h2>
+        <h2 id="team-title">{t('contacts.team')}</h2>
         <ul className="card-grid plain-list">
           {contacts.map((c) => (
             <li key={c.id} className="card card--padded contact-card">
-              <h3 className="contact-card__role">{c.role}</h3>
-              <p className="contact-name">
-                {c.name} <span className="fictive">(nom fictif)</span>
-              </p>
+              <div className="contact-card__head">
+                <Avatar contact={c} />
+                <div>
+                  <h3 className="contact-card__role">{c.role}</h3>
+                  <p className="contact-name">
+                    {c.name} <span className="fictive">({t('fictive.name')})</span>
+                  </p>
+                </div>
+              </div>
               <p>{c.mission}</p>
               <dl className="contact-card__info">
                 <div>
                   <dt>
                     <Icon name="pin" size={16} />
-                    Lieu de permanence
+                    {t('contacts.place')}
                   </dt>
                   <dd>{c.place}</dd>
                 </div>
                 <div>
                   <dt>
                     <Icon name="clock" size={16} />
-                    Horaires
+                    {t('contacts.hours')}
                   </dt>
                   <dd>{c.hours}</dd>
                 </div>
                 <div>
                   <dt>
                     <Icon name="phone" size={16} />
-                    Téléphone
+                    {t('contacts.phone')}
                   </dt>
                   <dd>
-                    <a href={`tel:${c.phone.replace(/\s/g, '')}`}>{c.phone}</a>
+                    <a href={`tel:${c.phone.replace(/\s/g, '')}`} dir="ltr">
+                      {c.phone}
+                    </a>
                   </dd>
                 </div>
                 <div>
                   <dt>
                     <Icon name="mail" size={16} />
-                    Courriel
+                    {t('contacts.email')}
                   </dt>
                   <dd>
-                    <a href={`mailto:${c.email}`}>{c.email}</a>
+                    <a href={`mailto:${c.email}`} dir="ltr">
+                      {c.email}
+                    </a>
                   </dd>
                 </div>
               </dl>

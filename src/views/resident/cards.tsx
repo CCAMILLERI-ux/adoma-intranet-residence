@@ -1,10 +1,11 @@
 // Cartes partagées : vue résident, aperçus de l'administration.
 
 import type { Campaign, LocalContent } from '../../data/types'
-import { formatDayMonth, formatShortDate, formatTimeRange } from '../../lib/dates'
 import type { FeedItem } from '../../lib/visibility'
-import { TEMPLATE_LABELS } from '../../lib/visibility'
+import { useI18n } from '../../i18n'
+import { useStore } from '../../lib/store'
 import { Icon, ScopeTag } from '../../components/ui'
+import { ListenButton } from '../../components/ListenButton'
 
 export function excerpt(text: string, max = 150): string {
   const flat = text.replace(/\s+/g, ' ').trim()
@@ -16,9 +17,17 @@ export function localSummary(c: LocalContent): string {
   return excerpt(c.description || c.message)
 }
 
-export function NewsCard({ item, to }: { item: FeedItem; to?: string }) {
+/** Texte lu par le lecteur vocal. */
+export function spokenText(item: FeedItem): string {
+  return item.kind === 'national'
+    ? [item.campaign.summary, item.campaign.message].filter(Boolean).join('. ')
+    : item.content.message || item.content.description
+}
+
+export function NewsCard({ item, to, listen }: { item: FeedItem; to?: string; listen?: boolean }) {
+  const { t, shortDate } = useI18n()
   const isNational = item.kind === 'national'
-  const category = isNational ? item.campaign.category : TEMPLATE_LABELS[item.content.template]
+  const category = isNational ? item.campaign.category : t(`tpl.${item.content.template}`)
   const title = isNational ? item.campaign.title : item.content.title
   const summary = isNational ? item.campaign.summary : localSummary(item.content)
   const Title = to ? 'a' : 'span'
@@ -34,15 +43,17 @@ export function NewsCard({ item, to }: { item: FeedItem; to?: string }) {
         </Title>
       </h3>
       <p className="news-card__summary">{summary}</p>
-      <p className="news-card__date">
-        Publié le <time dateTime={item.date}>{formatShortDate(item.date)}</time>
-      </p>
+      <div className="news-card__foot">
+        <p className="news-card__date">{t('published', { date: shortDate(item.date) })}</p>
+        {listen && <ListenButton id={`card-${item.id}`} title={title} text={spokenText(item)} compact />}
+      </div>
     </article>
   )
 }
 
-export function EventCard({ event, to }: { event: LocalContent; to?: string }) {
-  const { day, month } = formatDayMonth(event.startDate)
+export function EventCard({ event, to, registration }: { event: LocalContent; to?: string; registration?: boolean }) {
+  const { shortDate, timeRange, dayMonth } = useI18n()
+  const { day, month } = dayMonth(event.startDate)
   const Title = to ? 'a' : 'span'
   return (
     <article className="event-card">
@@ -59,8 +70,8 @@ export function EventCard({ event, to }: { event: LocalContent; to?: string }) {
         <p className="event-card__info">
           <Icon name="calendar" size={16} />
           <span>
-            <time dateTime={event.startDate}>{formatShortDate(event.startDate)}</time>
-            {event.startTime && `, ${formatTimeRange(event.startTime, event.endTime)}`}
+            <time dateTime={event.startDate}>{shortDate(event.startDate)}</time>
+            {event.startTime && `, ${timeRange(event.startTime, event.endTime)}`}
           </span>
         </p>
         {event.location && (
@@ -69,8 +80,48 @@ export function EventCard({ event, to }: { event: LocalContent; to?: string }) {
             {event.location}
           </p>
         )}
+        {registration && <Registration event={event} compact />}
       </div>
     </article>
+  )
+}
+
+/** Nombre d'inscrits affiché : inscrits fictifs de départ + le visiteur s'il s'est inscrit. */
+export function participantCount(event: LocalContent, registered: boolean): number {
+  return (event.participants ?? 0) + (registered ? 1 : 0)
+}
+
+/** Inscription simulée à un atelier, enregistrée sur ce navigateur. */
+export function Registration({ event, compact }: { event: LocalContent; compact?: boolean }) {
+  const { t, tn } = useI18n()
+  const { data, toggleRegistration, notify } = useStore()
+  const registered = !!data.registrations[event.id]
+  const count = participantCount(event, registered)
+  return (
+    <div className={`registration ${compact ? 'registration--compact' : ''}`}>
+      <p className="registration__count">
+        <Icon name="people" size={16} />
+        {tn('reg.count', count)}
+        {registered && (
+          <span className="registration__done">
+            <Icon name="check" size={14} />
+            {t('reg.done')}
+          </span>
+        )}
+      </p>
+      <button
+        type="button"
+        className={`btn btn--sm ${registered ? 'btn--secondary' : 'btn--primary'}`}
+        onClick={() => {
+          toggleRegistration(event.id)
+          notify(t(registered ? 'reg.notice.off' : 'reg.notice.on', { title: event.title }))
+        }}
+      >
+        <span>{registered ? t('reg.cancel') : t('reg.join')}</span>
+        <span className="visually-hidden"> : {event.title}</span>
+      </button>
+      {!compact && <p className="registration__note">{t('reg.note')}</p>}
+    </div>
   )
 }
 

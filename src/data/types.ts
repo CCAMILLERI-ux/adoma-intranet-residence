@@ -93,6 +93,8 @@ export interface LocalContent {
   consequences: string
   /** Modalités de participation (événements). */
   participation: string
+  /** Nombre d'inscrits fictifs au départ (événements), hors inscription du visiteur. */
+  participants?: number
   contact: string
   /** Texte final affiché aux résidents (modifiable). */
   message: string
@@ -121,6 +123,27 @@ export interface Campaign {
   updatedAt: string
 }
 
+/** Signalement de panne déposé par un résident (simulation, stocké sur le navigateur). */
+export type ReportCategory = 'plomberie' | 'electricite' | 'chauffage' | 'serrurerie' | 'equipement' | 'parties-communes' | 'autre'
+export type ReportStatus = 'recu' | 'en-cours' | 'resolu'
+
+export interface Report {
+  id: string
+  /** Référence lisible, ex. SIG-0427. */
+  reference: string
+  residenceId: ResidenceId
+  category: ReportCategory
+  /** Numéro de logement saisi par le résident (fictif dans la démonstration). */
+  unit: string
+  description: string
+  urgent: boolean
+  status: ReportStatus
+  /** Créé depuis ce navigateur pendant la démonstration (et non un exemple). */
+  mine: boolean
+  createdAt: string
+  updatedAt: string
+}
+
 export interface AppData {
   version: number
   /** Date de génération des exemples (pour information). */
@@ -129,4 +152,7 @@ export interface AppData {
   contacts: Contact[]
   contents: LocalContent[]
   campaigns: Campaign[]
+  reports: Report[]
+  /** Inscriptions du visiteur aux événements (identifiant de l'événement → inscrit). */
+  registrations: Record<string, boolean>
 }

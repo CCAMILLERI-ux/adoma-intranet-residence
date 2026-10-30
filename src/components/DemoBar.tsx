@@ -10,6 +10,7 @@ const VIEW_LABELS: Record<View, string> = {
   resident: 'Vue résident',
   gestion: 'Administration de résidence',
   central: 'Administration centrale',
+  ecran: 'Affichage hall (TV)',
 }
 
 export function DemoBar({ route }: { route: Route }) {

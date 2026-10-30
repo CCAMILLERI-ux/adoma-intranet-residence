@@ -4,6 +4,7 @@ import { useEffect, useRef, type ReactNode } from 'react'
 import type { DisplayStatus } from '../data/types'
 import { STATUS_LABELS } from '../lib/visibility'
 import { useStore } from '../lib/store'
+import { useI18n } from '../i18n'
 
 /* ---------- Pictogrammes (toujours accompagnés d'un texte) ---------- */
 
@@ -36,6 +37,13 @@ const ICONS = {
   globe: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM3 12h18M12 3c2.5 2.5 3.5 5.5 3.5 9s-1 6.5-3.5 9c-2.5-2.5-3.5-5.5-3.5-9s1-6.5 3.5-9z',
   undo: 'M9 14L4 9l5-5M4 9h10a6 6 0 0 1 0 12h-3',
   menu: 'M4 7h16M4 12h16M4 17h16',
+  speaker: 'M4 9h4l5-4v14l-5-4H4zM16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12',
+  stop: 'M7 7h10v10H7z',
+  tv: 'M3 5h18v12H3zM8 21h8M12 17v4',
+  pause: 'M8 5v14M16 5v14',
+  play: 'M7 5l12 7-12 7z',
+  prev: 'M15 18l-6-6 6-6',
+  next: 'M9 18l6-6-6-6',
 } as const
 
 export type IconName = keyof typeof ICONS
@@ -175,15 +183,16 @@ export function StatusBadge({ status }: { status: DisplayStatus }) {
 
 /** Origine d'un contenu : toujours écrite en toutes lettres. */
 export function ScopeTag({ scope }: { scope: 'local' | 'national' }) {
+  const { t } = useI18n()
   return scope === 'national' ? (
     <span className="scope scope--national">
       <Icon name="globe" size={14} />
-      Campagne nationale
+      {t('scope.national')}
     </span>
   ) : (
     <span className="scope scope--local">
       <Icon name="pin" size={14} />
-      Information de la résidence
+      {t('scope.local')}
     </span>
   )
 }
